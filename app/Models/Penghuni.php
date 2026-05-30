@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable; // Untuk autentikasi penyewa
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Penghuni extends Authenticatable
 {
@@ -17,6 +17,7 @@ class Penghuni extends Authenticatable
         'email',
         'password',
         'id_kamar',
+        'durasi_sewa',
     ];
 
     protected $hidden = [

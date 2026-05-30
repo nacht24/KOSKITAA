@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable; // Untuk autentikasi admin
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable
 {
@@ -22,15 +22,18 @@ class Admin extends Authenticatable
         'password_admin',
     ];
 
-    // Relasi: Admin mengelola banyak Kos
     public function kos()
     {
         return $this->hasMany(Kos::class, 'id_admin');
     }
 
-    // Relasi: Admin mencatat banyak Pengeluaran
     public function pengeluaran()
     {
         return $this->hasMany(Pengeluaran::class, 'id_admin');
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password_admin;
     }
 }
