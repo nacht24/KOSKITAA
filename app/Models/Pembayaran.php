@@ -19,13 +19,11 @@ class Pembayaran extends Model
         'bukti_pembayaran',
     ];
 
-    // Relasi: Pembayaran ini milik seorang Penghuni/Anak Kos
     public function penghuni()
     {
         return $this->belongsTo(Penghuni::class, 'id_penghuni');
     }
 
-    // Relasi: Pembayaran ini mencas/melunasi satu Tagihan
     public function tagihan()
     {
         return $this->belongsTo(Tagihan::class, 'id_tagihan');

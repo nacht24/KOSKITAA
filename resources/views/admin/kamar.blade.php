@@ -68,8 +68,8 @@
                     <tr class="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-50 bg-gray-50/50">
                         <th class="p-4 pl-6">No. Kamar</th>
                         <th class="p-4">Foto</th>
-                        <th class="p-4">Gedung/Tipe</th>
-                        <th class="p-4">Nama Penyewa</th>
+                        <th class="p-4">Gedung</th>
+                        <th class="p-4">Penyewa</th>
                         <th class="p-4">Harga Sewa</th>
                         <th class="p-4">Status</th>
                         <th class="p-4 text-center">Aksi</th>
@@ -83,24 +83,19 @@
                             <div class="w-16 h-10 bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center text-xs">🖼️</div>
                         </td>
                         <td class="p-4 text-gray-500 text-xs">{{ $kamar->kos->nama_kos ?? 'Standar' }}</td>
-                        
                         <td class="p-4">
                             @if(strtolower($kamar->status_kamar) == 'terisi' && $kamar->penghuni->count() > 0)
                                 <div class="flex items-center gap-2">
                                     <div class="w-6 h-6 bg-blue-50 text-blue-600 font-bold text-2xs rounded-full flex items-center justify-center uppercase">
-                                        {{ substr(optional($kamar->penghuni->first())->nama ?? 'NN', 0, 2) }}
+                                        {{ substr($kamar->penghuni->first()->nama_penghuni ?? 'NN', 0, 2) }}
                                     </div>
-                                    <span class="font-bold text-gray-900 text-sm">
-                                        {{ optional($kamar->penghuni->first())->nama }}
-                                    </span>
+                                    <span class="font-bold text-gray-900 text-sm">{{ $kamar->penghuni->first()->nama_penghuni }}</span>
                                 </div>
                             @else
                                 <span class="text-gray-400 text-xs font-medium">-</span>
                             @endif
                         </td>
-                        
                         <td class="p-4 font-bold">Rp {{ number_format($kamar->harga_kamar, 0, ',', '.') }}</td>
-                        
                         <td class="p-4">
                             @if(in_array(strtolower($kamar->status_kamar), ['kosong', 'tersedia']))
                                 <span class="px-2.5 py-1 bg-green-50 text-green-600 text-2xs font-bold rounded-full">● Tersedia</span>
@@ -110,7 +105,6 @@
                                 <span class="px-2.5 py-1 bg-amber-50 text-amber-600 text-2xs font-bold rounded-full">● Perbaikan</span>
                             @endif
                         </td>
-                        
                         <td class="p-4">
                             <div class="flex items-center justify-center gap-2">
                                 <button onclick="openEditModal({{ json_encode($kamar) }})" class="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition">
@@ -139,40 +133,40 @@
 <div id="kamarModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
     <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl transform scale-95 transition-transform duration-300">
         <div class="flex justify-between items-center border-b pb-3 mb-4">
-            <h3 id="modalTitle" class="text-base font-bold text-gray-900">Tambah Unit Kamar Baru</h3>
+            <h3 id="modalTitle" class="text-base font-bold text-gray-900">Tambah Unit Kamar</h3>
             <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <form id="modalForm" action="{{ route('admin.kamar.store') }}" method="POST" class="space-y-4">
             @csrf
             <div id="methodContainer"></div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Gedung Lokasi Kamar</label>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Gedung Lokasi</label>
                 <select name="id_kos" id="input_id_kos" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
-                    <option value="">-- Pilih Cabang Gedung Kos --</option>
+                    <option value="">-- Pilih Cabang --</option>
                     @foreach($daftarKos as $kos)
                         <option value="{{ $kos->id_kos }}">{{ $kos->nama_kos }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nomor Unit Kamar</label>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nomor Unit</label>
                 <input type="text" name="no_kamar" id="input_no_kamar" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Harga Sewa Bulanan (Rp)</label>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Harga Sewa (Rp)</label>
                 <input type="number" name="harga_kamar" id="input_harga_kamar" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-bold text-gray-800">
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Status Ketersediaan</label>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Status</label>
                 <select name="status_kamar" id="input_status_kamar" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
-                    <option value="kosong">Kosong / Tersedia</option>
+                    <option value="kosong">Kosong</option>
                     <option value="terisi">Terisi</option>
                     <option value="perbaikan">Perbaikan</option>
                 </select>
             </div>
             <div class="flex gap-3 pt-2">
                 <button type="button" onclick="closeModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-2.5 rounded-xl text-sm transition">Batal</button>
-                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-sm">Simpan Kamar</button>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-sm">Simpan</button>
             </div>
         </form>
     </div>
@@ -197,7 +191,7 @@
     }
 
     function openEditModal(kamar) {
-        modalTitle.innerText = "Edit Data Kamar: " + kamar.no_kamar;
+        modalTitle.innerText = "Edit Kamar: " + kamar.no_kamar;
         let updateUrl = "{{ route('admin.kamar.update', ':id') }}";
         form.action = updateUrl.replace(':id', kamar.id_kamar);
         methodContainer.innerHTML = `<input type="hidden" name="_method" value="PUT">`;
@@ -205,7 +199,6 @@
         document.getElementById('input_no_kamar').value = kamar.no_kamar;
         document.getElementById('input_harga_kamar').value = kamar.harga_kamar;
         
-        // Memastikan value status huruf kecil/besar sama
         let status = kamar.status_kamar.toLowerCase();
         if(status === 'tersedia') status = 'kosong';
         document.getElementById('input_status_kamar').value = status;

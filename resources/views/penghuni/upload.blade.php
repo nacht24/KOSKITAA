@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Informasi Tagihan')
+@section('title', 'Upload Pembayaran')
 
 @section('content')
 <div class="space-y-8 max-w-5xl mx-auto">
     
     <div>
-        <h1 class="text-2xl font-black text-gray-900 tracking-tight">Informasi Tagihan</h1>
-        <p class="text-sm text-gray-500 mt-1 font-medium">Kelola dan lihat pengeluaran bulanan tempat tinggal Anda.</p>
+        <h1 class="text-2xl font-black text-gray-900 tracking-tight">Upload Pembayaran</h1>
+        <p class="text-sm text-gray-500 mt-1 font-medium">Selesaikan pembayaran tagihan bulanan Anda dengan mudah.</p>
     </div>
 
     @if(session('success'))
@@ -102,7 +102,7 @@
                     <div class="p-8 text-center bg-green-50/40 rounded-xl border border-green-100/50 space-y-2 flex flex-col items-center">
                         <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-1"><i data-lucide="sparkles" class="w-6 h-6"></i></div>
                         <h3 class="text-sm font-black text-green-800">Semua Tagihan Lunas!</h3>
-                        <p class="text-xs text-green-600 font-medium max-w-sm">Mantap! Administrasi hunian lo aman terkendali, tidak ada tagihan aktif yang perlu dibayar bulan ini.</p>
+                        <p class="text-xs text-green-600 font-medium max-w-sm">Mantap! Administrasi hunian lo aman terkendali, tidak ada tagihan aktif yang perlu dibayar bulan ini, cuy.</p>
                     </div>
                 @endif
             </div>

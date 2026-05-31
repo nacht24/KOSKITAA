@@ -16,13 +16,11 @@ class Tagihan extends Model
         'id_penghuni',
     ];
 
-    // Relasi: Tagihan dimiliki oleh satu Penghuni
     public function penghuni()
     {
         return $this->belongsTo(Penghuni::class, 'id_penghuni');
     }
 
-    // Relasi: Tagihan memiliki satu atau banyak Pembayaran (Bukti transfer)
     public function pembayaran()
     {
         return $this->hasMany(Pembayaran::class, 'id_tagihan');

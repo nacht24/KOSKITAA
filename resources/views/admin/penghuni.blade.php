@@ -10,7 +10,7 @@
             <h1 class="text-2xl font-black text-gray-900 tracking-tight">Manajemen Penyewa</h1>
             <p class="text-sm text-gray-500 mt-1 font-medium">Kelola data penyewa, durasi sewa, dan status kontrak.</p>
         </div>
-        <button type="button" onclick="openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-blue-100 flex items-center gap-2">
+        <button type="button" onclick="openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-blue-100 flex items-center gap-2 cursor-pointer">
             <i data-lucide="plus" class="w-4 h-4"></i> Tambah Penyewa Baru
         </button>
     </div>
@@ -33,9 +33,7 @@
                 </div>
             </div>
             <div class="mt-2 flex justify-start">
-                <span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-blue-100">
-                    +{{ $semuaPenghuni->count() }} bln ini
-                </span>
+                <span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-blue-100">+{{ $semuaPenghuni->count() }} bln ini</span>
             </div>
         </div>
 
@@ -49,7 +47,6 @@
                     <i data-lucide="user-check" class="w-5 h-5"></i>
                 </div>
             </div>
-            <div></div>
         </div>
 
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between min-h-[140px]">
@@ -63,9 +60,7 @@
                 </div>
             </div>
             <div class="mt-2 flex justify-start">
-                <span class="bg-red-50 text-red-600 text-[10px] font-black px-2 py-0.5 rounded-lg border border-red-100 uppercase tracking-wide">
-                    Penting
-                </span>
+                <span class="bg-red-50 text-red-600 text-[10px] font-black px-2 py-0.5 rounded-lg border border-red-100 uppercase tracking-wide">Penting</span>
             </div>
         </div>
 
@@ -79,7 +74,6 @@
                     <i data-lucide="hourglass" class="w-5 h-5"></i>
                 </div>
             </div>
-            <div></div>
         </div>
     </div>
 
@@ -97,6 +91,7 @@
                 <thead>
                     <tr class="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-50 bg-gray-50/50">
                         <th class="p-4 pl-6">Nama Penyewa</th>
+                        <th class="p-4">No. HP / WhatsApp</th>
                         <th class="p-4">Nomor Kamar</th>
                         <th class="p-4">Tanggal Masuk</th>
                         <th class="p-4">Durasi Sewa</th>
@@ -118,7 +113,7 @@
                                 </div>
                             </div>
                         </td>
-
+                        <td class="p-4 text-xs font-semibold text-gray-600">{{ $p->no_hp ?? '-' }}</td>
                         <td class="p-4">
                             @if($p->id_kamar)
                                 <span class="font-bold text-blue-600 bg-blue-50/50 px-2.5 py-1 rounded-lg text-xs border border-blue-100/50">
@@ -128,15 +123,8 @@
                                 <span class="text-gray-400 text-xs font-medium">-</span>
                             @endif
                         </td>
-
-                        <td class="p-4 text-gray-500 text-xs">
-                            {{ $p->created_at ? $p->created_at->format('d M Y') : '12 Jan 2024' }}
-                        </td>
-
-                        <td class="p-4 text-gray-600 text-sm font-semibold">
-                            {{ $p->durasi_sewa ?? '12' }} Bulan
-                        </td>
-
+                        <td class="p-4 text-gray-500 text-xs">{{ $p->created_at ? $p->created_at->format('d M Y') : '12 Jan 2024' }}</td>
+                        <td class="p-4 text-gray-600 text-sm font-semibold">{{ $p->durasi_sewa ?? '12' }} Bulan</td>
                         <td class="p-4">
                             @if($p->id_kamar)
                                 <span class="px-2.5 py-1 bg-green-50 text-green-600 text-2xs font-bold rounded-full">Aktif</span>
@@ -144,23 +132,20 @@
                                 <span class="px-2.5 py-1 bg-amber-50 text-amber-600 text-2xs font-bold rounded-full">Menunggu</span>
                             @endif
                         </td>
-
                         <td class="p-4">
                             <div class="flex items-center justify-center gap-2">
                                 @if(!$p->id_kamar)
-                                    <select onchange="submitPlotKamar(this, '{{ $p->id_penghuni }}')" class="px-2 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                                    <select onchange="submitPlotKamar(this, '{{ $p->id_penghuni }}')" class="px-2 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-medium cursor-pointer">
                                         <option value="">-- Plot Kamar --</option>
                                         @foreach($kamarTersedia as $k)
                                             <option value="{{ $k->id_kamar }}">{{ $k->kos->nama_kos ?? 'Kos' }} ({{ $k->no_kamar }})</option>
                                         @endforeach
                                     </select>
                                 @endif
-
-                                <button type="button" onclick="openEditModal({{ json_encode($p) }})" class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition">
+                                <button type="button" onclick="openEditModal({{ json_encode($p) }})" class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition cursor-pointer">
                                     <i data-lucide="pencil" class="w-4 h-4"></i>
                                 </button>
-                                
-                                <button type="button" onclick="openDeleteModal('{{ $p->id_penghuni }}', '{{ $p->nama_penghuni }}')" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
+                                <button type="button" onclick="openDeleteModal('{{ $p->id_penghuni }}', '{{ $p->nama_penghuni }}')" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition cursor-pointer">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </div>
@@ -168,7 +153,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="p-12 text-center text-gray-400 text-xs">Belum ada akun anak kos mendaftar di sistem.</td>
+                        <td colspan="7" class="p-12 text-center text-gray-400 text-xs">Belum ada akun anak kos mendaftar di sistem.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -193,10 +178,13 @@
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Alamat Email</label>
                 <input type="email" name="email" required placeholder="budi@gmail.com" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
             </div>
-            
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nomor HP / WhatsApp</label>
+                <input type="tel" name="no_hp" required placeholder="Contoh: 08123456789" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+            </div>
             <div>
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Plot Unit Kamar (Tersedia)</label>
-                <select name="id_kamar" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                <select name="id_kamar" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium cursor-pointer">
                     @if($kamarTersedia->count() > 0)
                         <option value="">-- Pilih Kamar (Bisa Dikosongkan) --</option>
                         @foreach($kamarTersedia as $k)
@@ -207,10 +195,9 @@
                     @endif
                 </select>
             </div>
-
             <div>
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Durasi Sewa</label>
-                <select name="durasi_sewa" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                <select name="durasi_sewa" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium cursor-pointer">
                     <option value="1">1 Bulan</option>
                     <option value="3">3 Bulan</option>
                     <option value="6">6 Bulan</option>
@@ -243,8 +230,12 @@
                 <input type="email" id="edit_email" name="email" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
             </div>
             <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nomor HP / WhatsApp</label>
+                <input type="tel" id="edit_nohp" name="no_hp" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+            </div>
+            <div>
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Pindah Unit Kamar</label>
-                <select id="edit_kamar" name="id_kamar" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                <select id="edit_kamar" name="id_kamar" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium cursor-pointer">
                     <option value="">-- Kosongkan / Lepas Kamar --</option>
                     @foreach($kamarTersedia as $k)
                         <option value="{{ $k->id_kamar }}">{{ $k->kos->nama_kos ?? 'Kos' }} - Kamar {{ $k->no_kamar }}</option>
@@ -253,7 +244,7 @@
             </div>
             <div>
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Durasi Sewa</label>
-                <select id="edit_durasi" name="durasi_sewa" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                <select id="edit_durasi" name="durasi_sewa" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium cursor-pointer">
                     <option value="1">1 Bulan</option>
                     <option value="3">3 Bulan</option>
                     <option value="6">6 Bulan</option>
@@ -275,7 +266,6 @@
         </div>
         <h3 class="text-base font-black text-gray-900">Keluarkan Penghuni?</h3>
         <p class="text-xs text-gray-500 mt-2">Anda yakin ingin menghapus/mengeluarkan <span id="delete_target_name" class="font-bold text-gray-900"></span> dari sistem KosKitaa?</p>
-        
         <form id="deleteForm" action="" method="POST" class="flex gap-3 mt-6">
             @csrf
             @method('DELETE')
@@ -317,18 +307,16 @@
     function openEditModal(penghuni) {
         document.getElementById('edit_nama').value = penghuni.nama_penghuni;
         document.getElementById('edit_email').value = penghuni.email;
+        document.getElementById('edit_nohp').value = penghuni.no_hp ?? '';
         document.getElementById('edit_durasi').value = penghuni.durasi_sewa ?? '12';
         document.getElementById('edit_kamar').value = penghuni.id_kamar ?? '';
-
         document.getElementById('editForm').action = `/admin/penghuni/${penghuni.id_penghuni}`;
-        
         openModal('editModal');
     }
 
     function openDeleteModal(id, nama) {
         document.getElementById('delete_target_name').innerText = nama;
         document.getElementById('deleteForm').action = `/admin/penghuni/${id}`;
-        
         openModal('deleteModal');
     }
 

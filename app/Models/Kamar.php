@@ -16,13 +16,11 @@ class Kamar extends Model
         'id_kos',
     ];
 
-    // Relasi: Kamar berada di sebuah properti Kos
     public function kos()
     {
         return $this->belongsTo(Kos::class, 'id_kos');
     }
 
-    // Relasi: Kamar ditempati oleh Penghuni
     public function penghuni()
     {
         return $this->hasMany(Penghuni::class, 'id_kamar');

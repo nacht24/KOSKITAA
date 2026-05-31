@@ -16,13 +16,11 @@ class Pesan extends Model
         'id_penghuni',
     ];
 
-    // Relasi: Pesan ditujukan/diterima oleh satu Admin
     public function admin()
     {
         return $this->belongsTo(Admin::class, 'id_admin');
     }
 
-    // Relasi: Pesan dikirim oleh satu Penghuni
     public function penghuni()
     {
         return $this->belongsTo(Penghuni::class, 'id_penghuni');

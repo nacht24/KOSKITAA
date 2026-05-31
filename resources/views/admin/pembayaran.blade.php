@@ -11,7 +11,6 @@
         </div>
     @endif
 
-    {{-- Header --}}
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
             <h1 class="text-xl font-bold text-gray-900">Verifikasi Pembayaran</h1>
@@ -31,34 +30,32 @@
         </div>
     </div>
 
-    {{-- Summary Cards --}}
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menunggu Tinjauan</p>
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-black text-gray-900">{{ $totalMenunggu ?? 0 }}</span>
-                @if(($totalBaru ?? 0) > 0)
-                    <span class="text-xs font-bold text-blue-500 mb-1">+{{ $totalBaru }} baru</span>
-                @endif
+                <span class="text-3xl font-black text-gray-900">{{ $menungguTinjauan ?? 0 }}</span>
             </div>
         </div>
+
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Disetujui Hari Ini</p>
-            <span class="text-3xl font-black text-gray-900">{{ $totalDisetujuiHariIni ?? 0 }}</span>
+            <span class="text-3xl font-black text-gray-900">{{ $disetujuiHariIni ?? 0 }}</span>
         </div>
+
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Total Jumlah (Memverifikasi)</p>
-            <span class="text-2xl font-black text-gray-900">Rp {{ number_format($totalJumlah ?? 0, 0, ',', '.') }}</span>
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Total Dana Tertunda</p>
+            <span class="text-2xl font-black text-gray-900">Rp {{ number_format($totalMemverifikasi ?? 0, 0, ',', '.') }}</span>
         </div>
+
     </div>
 
-    {{-- Table Card --}}
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
 
         <div class="p-5 border-b border-gray-100 flex items-center justify-between">
             <h2 class="text-sm font-bold text-gray-800">Antrean Verifikasi</h2>
             <div class="flex items-center gap-1 text-gray-400">
-                {{-- Filter/sort icon --}}
                 <button class="p-1.5 hover:bg-gray-50 rounded-lg transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
@@ -98,12 +95,10 @@
                         @endphp
                         <tr class="hover:bg-gray-50/50 transition-colors">
 
-                            {{-- Tanggal --}}
                             <td class="p-4 pl-6 text-gray-500 text-xs whitespace-nowrap">
                                 {{ \Carbon\Carbon::parse($tanggal)->format('d M Y') }}
                             </td>
 
-                            {{-- Nama Penyewa --}}
                             <td class="p-4">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-8 h-8 {{ $colorClass }} font-bold text-xs rounded-full flex items-center justify-center flex-shrink-0">
@@ -113,17 +108,14 @@
                                 </div>
                             </td>
 
-                            {{-- Kamar --}}
                             <td class="p-4 text-gray-600 text-xs font-semibold">
-                                {{ $bayar->penghuni->kamar->nama_kamar ?? '-' }}
+                                {{ $bayar->penghuni->kamar->no_kamar ?? '-' }}
                             </td>
 
-                            {{-- Jumlah --}}
                             <td class="p-4 font-bold text-gray-900">
                                 Rp {{ number_format($bayar->tagihan->total_tagihan ?? 0, 0, ',', '.') }}
                             </td>
 
-                            {{-- Bukti --}}
                             <td class="p-4">
                                 @if($bayar->bukti_pembayaran)
                                     <a href="{{ asset('storage/' . $bayar->bukti_pembayaran) }}" target="_blank"
@@ -143,7 +135,6 @@
                                 @endif
                             </td>
 
-                            {{-- Status --}}
                             <td class="p-4">
                                 @if($isLunas)
                                     <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-full">
@@ -158,11 +149,9 @@
                                 @endif
                             </td>
 
-                            {{-- Aksi --}}
                             <td class="p-4 text-center">
                                 @if(!$isLunas)
                                     <div class="flex items-center justify-center gap-2">
-                                        {{-- Tolak --}}
                                         <form action="{{ route('admin.pembayaran.tolak', $bayar->id_pembayaran) }}" method="POST"
                                               onsubmit="return confirm('Yakin ingin menolak pembayaran ini?')">
                                             @csrf
@@ -174,7 +163,6 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        {{-- Setujui --}}
                                         <form action="{{ route('admin.pembayaran.setujui', $bayar->id_pembayaran) }}" method="POST"
                                               onsubmit="return confirm('Konfirmasi bahwa uang transferan ini valid?')">
                                             @csrf
@@ -204,14 +192,12 @@
             </table>
         </div>
 
-        {{-- Pagination --}}
         @if($semuaPembayaran->hasPages())
         <div class="p-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p class="text-xs text-gray-400">
                 Menampilkan {{ $semuaPembayaran->firstItem() }} hingga {{ $semuaPembayaran->lastItem() }} dari {{ $semuaPembayaran->total() }} entri
             </p>
             <div class="flex items-center gap-1">
-                {{-- Prev --}}
                 @if($semuaPembayaran->onFirstPage())
                     <span class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-300 border border-gray-100 cursor-not-allowed text-xs">‹</span>
                 @else
@@ -228,7 +214,6 @@
                     @endif
                 @endforeach
 
-                {{-- Next --}}
                 @if($semuaPembayaran->hasMorePages())
                     <a href="{{ $semuaPembayaran->nextPageUrl() }}"
                        class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 border border-gray-200 hover:bg-gray-50 transition text-xs">›</a>

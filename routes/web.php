@@ -13,7 +13,7 @@ use App\Http\Controllers\LaporanController;
 
 // 1. Jalur Halaman Utama & Autentikasi Publik
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -27,8 +27,10 @@ Route::post('/penghuni/register', [PenghuniController::class, 'prosesRegister'])
 // 2. JALUR GROUP: PENGHUNI / ANAK KOS (KHUSUS YANG SUDAH LOGIN)
 Route::prefix('penghuni')->middleware('auth:web')->group(function () {
 Route::get('/dashboard', [PenghuniController::class, 'dashboard'])->name('penghuni.dashboard');
+Route::get('/upload/{id}', [TagihanController::class, 'showUpload'])->name('penghuni.upload');
 Route::get('/tagihan', [TagihanController::class, 'index'])->name('penghuni.tagihan');
 Route::post('/tagihan/bayar', [TagihanController::class, 'bayarTagihan'])->name('penghuni.tagihan.submit');
+Route::get('/riwayat', [TagihanController::class, 'riwayat'])->name('penghuni.riwayat');
 });
 
 // 3. JALUR GROUP: ADMIN / PEMILIK KOS (KHUSUS ADMIN YANG SUDAH LOGIN)
@@ -46,7 +48,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         'destroy' => 'admin.kamar.destroy',
     ]);
     // MASTER DATA PENGHUNI
-    // MASTER DATA PENGHUNI
     Route::get('/penghuni', [PenghuniController::class, 'indexAdmin'])->name('admin.penghuni');
     Route::put('/penghuni/assign/{id}', [PenghuniController::class, 'assignKamar'])->name('admin.penghuni.assign');
     Route::put('/penghuni/{id}', [PenghuniController::class, 'update'])->name('admin.penghuni.update'); // Ditambah garing (/) di depan biar konsisten
@@ -54,6 +55,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     // MASTER DATA VERIFIKASI PEMBAYARAN
     Route::get('/pembayaran', [PembayaranController::class, 'indexAdmin'])->name('admin.pembayaran');
     Route::put('/pembayaran/setujui/{id}', [PembayaranController::class, 'setujuiPembayaran'])->name('admin.pembayaran.setujui');
+    Route::put('/pembayaran/tolak/{id}', [PembayaranController::class, 'tolakPembayaran'])->name('admin.pembayaran.tolak');
     // MASTER DATA PENGELUARAN
     Route::resource('pengeluaran', PengeluaranController::class)->names([
         'index' => 'admin.pengeluaran.index',

@@ -7,58 +7,33 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // 1. Menampilkan satu halaman login utama untuk semua user
     public function showLogin()
     {
-        return view('auth.login'); 
+        return view('auth.login');
     }
 
-    // 2. Memproses login satu pintu (Validasi silang Admin & Penghuni)
     public function login(Request $request)
     {
-        // 1. Validasi input form utama
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // =========================================================================
-        // JALUR 1: CEK TABEL PENGHUNI DULU (ANAK KOS)
-        // =========================================================================
-        $penghuniCredentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
-
-        if (Auth::guard('web')->attempt($penghuniCredentials)) {
+        if (Auth::guard('web')->attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            // Sukses -> langsung masuk panel penghuni
             return redirect()->route('penghuni.tagihan');
         }
 
-        // =========================================================================
-        // JALUR 2: KALAU BUKAN PENGHUNI, BARU CEK TABEL ADMIN (BAPAK KOS)
-        // =========================================================================
-        $adminCredentials = [
-            'email_admin' => $request->email, 
-            'password' => $request->password,
-        ];
-
-        if (Auth::guard('admin')->attempt($adminCredentials)) {
+        if (Auth::guard('admin')->attempt(['email_admin' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
-            // Sukses -> masuk dashboard admin
             return redirect()->route('admin.dashboard');
         }
 
-        // =========================================================================
-        // JALUR 3: DUA-DUANYA KAGAK ADA
-        // =========================================================================
         return redirect()->back()->withErrors([
-            'login_error' => 'Email atau Password salah, cuy!',
+            'login_error' => 'Email atau Password salah.',
         ])->withInput($request->only('email'));
     }
 
-    // 3. Fungsi Logout Universal
     public function logout(Request $request)
     {
         if (Auth::guard('admin')->check()) {

@@ -7,14 +7,12 @@ use App\Models\Kos;
 
 class KosController extends Controller
 {
-    // 1. TAMPILKAN HALAMAN DAFTAR GEDUNG KOS (DFD PROSES 2.3.5)
     public function index()
     {
         $semuaKos = Kos::all();
         return view('admin.kos', compact('semuaKos'));
     }
 
-    // 2. PROSES TAMBAH GEDUNG KOS BARU (DFD PROSES 2.3.1)
     public function store(Request $request)
     {
         $request->validate([
@@ -25,18 +23,17 @@ class KosController extends Controller
         Kos::create([
             'nama_kos' => $request->nama_kos,
             'alamat_kos' => $request->alamat_kos,
-            'id_admin' => 1, // Default ID bapak kos yang login
+            'id_admin' => 1,
         ]);
 
-        return redirect()->back()->with('success', 'Gedung Kos baru berhasil didaftarkan, cuy!');
+        return redirect()->back()->with('success', 'Gedung kos berhasil didaftarkan.');
     }
 
-    // 3. PROSES HAPUS GEDUNG KOS
     public function destroy($id)
     {
         $kos = Kos::findOrFail($id);
         $kos->delete();
 
-        return redirect()->back()->with('success', 'Gedung Kos berhasil dihapus dari sistem!');
+        return redirect()->back()->with('success', 'Gedung kos berhasil dihapus.');
     }
 }

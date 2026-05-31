@@ -17,6 +17,7 @@ class Penghuni extends Authenticatable
         'email',
         'password',
         'id_kamar',
+        'no_hp',
         'durasi_sewa',
     ];
 
@@ -25,19 +26,16 @@ class Penghuni extends Authenticatable
         'remember_token',
     ];
 
-    // Relasi: Penghuni menempati satu Kamar
     public function kamar()
     {
         return $this->belongsTo(Kamar::class, 'id_kamar');
     }
 
-    // Relasi: Penghuni memiliki banyak Tagihan
     public function tagihan()
     {
         return $this->hasMany(Tagihan::class, 'id_penghuni');
     }
 
-    // Relasi: Penghuni mengirim banyak Pesan/Laporan
     public function pesan()
     {
         return $this->hasMany(Pesan::class, 'id_penghuni');

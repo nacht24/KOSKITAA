@@ -1,18 +1,29 @@
-@extends('layouts/app')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - KOSKITAA</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased flex items-center justify-center min-h-screen p-4">
 
-@section('title', 'Login - KOSKITAA')
-
-@section('content')
-<div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white border border-gray-200 rounded-2xl p-8 shadow-xl animate-fade-in">
+    <div class="w-full max-w-md bg-white border border-gray-200 rounded-2xl p-8 shadow-xl">
         
-        <!-- HEADER -->
         <div class="text-center mb-8">
             <h1 class="text-3xl font-extrabold text-blue-600 tracking-tight">KOSKITAA</h1>
             <p class="text-sm text-gray-500 mt-1">Silakan login untuk mengakses akun Anda</p>
         </div>
 
-        <!-- NOTIFIKASI ERROR JIKA GAGAL LOGIN -->
         @if ($errors->any())
             <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm">
                 <ul class="list-disc list-inside font-medium">
@@ -23,7 +34,6 @@
             </div>
         @endif
 
-        <!-- FORM LOGIN SATU PINTU -->
         <form action="{{ route('login.submit') }}" method="POST" class="space-y-5">
             @csrf
             
@@ -40,19 +50,18 @@
             </div>
 
             <button type="submit" 
-                class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-blue-700 transition shadow-md shadow-blue-600/10">
+                class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-blue-700 transition shadow-md shadow-blue-600/10 cursor-pointer">
                 Masuk Sistem
             </button>
         </form>
 
-        <!-- LINK REGISTER UNTUK PENGHUNI BARU -->
         <div class="text-center mt-6">
             <p class="text-xs text-gray-500">
                 Belum punya akun kos? 
                 <a href="{{ route('penghuni.register') }}" class="text-blue-600 font-bold hover:underline">Daftar Di Sini</a>
             </p>
         </div>
-
     </div>
-</div>
-@endsection
+
+</body>
+</html>

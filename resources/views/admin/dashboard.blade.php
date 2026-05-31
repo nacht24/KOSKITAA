@@ -8,9 +8,9 @@
     <div class="flex justify-between items-start">
         <div>
             <h1 class="text-2xl font-black text-gray-900 tracking-tight">Ringkasan Dashboard</h1>
-            <p class="text-sm text-gray-500 mt-1 font-medium">Selamat datang kembali, inilah yang terjadi di Skyline Management hari ini.</p>
+            <p class="text-sm text-gray-500 mt-1 font-medium">Selamat datang kembali, inilah yang terjadi di Residential Management hari ini.</p>
         </div>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-blue-100">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-blue-100 cursor-pointer">
             + Tambah Transaksi Baru
         </button>
     </div>
@@ -20,20 +20,24 @@
             <div class="flex justify-between items-start">
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Kamar Aktif</p>
-                    <h2 class="text-3xl font-black text-gray-900 mt-2">{{ $totalKamar ?? 45 }} <span class="text-lg font-bold text-gray-400">/ 50</span></h2>
+                    <h2 class="text-3xl font-black text-gray-900 mt-2">
+                        {{ $kamarTerisi }} <span class="text-lg font-bold text-gray-400">/ {{ $totalKamar }}</span>
+                    </h2>
                 </div>
-                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">90% Okupansi</span>
+                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">
+                    {{ $okupansi }}% Okupansi
+                </span>
             </div>
             <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                <div class="bg-blue-600 h-full rounded-full" style="width: 90%"></div>
+                <div class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: {{ $okupansi }}%"></div>
             </div>
         </div>
 
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4 h-40">
-            <div class="p-3 bg-gray-50 rounded-xl text-xl">👥</div>
+            <div class="p-3 bg-blue-50 text-blue-600 rounded-xl text-xl font-bold w-12 h-12 flex items-center justify-center">👥</div>
             <div>
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Penyewa</p>
-                <h2 class="text-3xl font-black text-gray-900 mt-2">{{ $totalPenghuni ?? 45 }}</h2>
+                <h2 class="text-3xl font-black text-gray-900 mt-2">{{ $totalPenghuni }}</h2>
                 <p class="text-xs text-gray-400 mt-2 font-medium">Di seluruh properti yang dikelola</p>
             </div>
         </div>
@@ -42,17 +46,31 @@
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <div class="flex justify-between items-center mb-6">
             <h3 class="font-bold text-gray-800">Tren Pendapatan</h3>
-            <select class="text-xs font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus:ring-0">
+            <select class="text-xs font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus:ring-0 cursor-pointer">
                 <option>6 Bulan Terakhir</option>
             </select>
         </div>
         <div class="flex items-end justify-between h-48 pt-4 px-4 border-b border-gray-100">
-            <div class="w-16 bg-blue-100 h-20 rounded-t-xl flex flex-col justify-end items-center"><span class="text-2xs font-bold text-gray-400 mb-[-24px] pb-6">Jan</span></div>
-            <div class="w-16 bg-blue-100 h-28 rounded-t-xl flex flex-col justify-end items-center"><span class="text-2xs font-bold text-gray-400 mb-[-24px] pb-6">Feb</span></div>
-            <div class="w-16 bg-blue-100 h-24 rounded-t-xl flex flex-col justify-end items-center"><span class="text-2xs font-bold text-gray-400 mb-[-24px] pb-6">Mar</span></div>
-            <div class="w-16 bg-blue-100 h-32 rounded-t-xl flex flex-col justify-end items-center"><span class="text-2xs font-bold text-gray-400 mb-[-24px] pb-6">Apr</span></div>
-            <div class="w-16 bg-blue-100 h-36 rounded-t-xl flex flex-col justify-end items-center"><span class="text-2xs font-bold text-gray-400 mb-[-24px] pb-6">Mei</span></div>
-            <div class="w-16 bg-blue-600 h-44 rounded-t-xl flex flex-col justify-end items-center"><span class="text-2xs font-bold text-gray-400 mb-[-24px] pb-6">Jun</span></div>
+            @foreach($dataTren as $bulan => $totalUang)
+                @php
+                    $tinggiBatang = ($totalUang / $pendapatanMaksimal) * 100;
+                    $tinggiBar = $totalUang > 0 ? max($tinggiBatang, 8) : 4; 
+                @endphp
+                
+                <div class="w-16 flex flex-col justify-end items-center group relative">
+                    <div class="absolute bottom-full mb-2 bg-gray-900 text-white text-3xs font-bold px-2 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 transition duration-200 pointer-events-none whitespace-nowrap z-10">
+                        Rp {{ number_format($totalUang, 0, ',', '.') }}
+                    </div>
+
+                    <div class="w-full {{ $bulan == date('M') || ($bulan == 'Mei' && date('M') == 'May') ? 'bg-blue-600' : 'bg-blue-100' }} rounded-t-xl transition-all duration-500" 
+                         style="height: {{ $tinggiBar }}px;">
+                    </div>
+                    
+                    <span class="text-2xs font-bold {{ $bulan == date('M') || ($bulan == 'Mei' && date('M') == 'May') ? 'text-blue-600 font-black' : 'text-gray-400' }} mt-2 pt-1">
+                        {{ $bulan }}
+                    </span>
+                </div>
+            @endforeach
         </div>
     </div>
 
@@ -72,45 +90,53 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50 text-sm font-medium text-gray-700">
-                    <tr>
-                        <td class="p-4 pl-6 text-gray-500 text-xs">24 Okt 2023</td>
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-blue-50 text-blue-600 font-bold text-xs rounded-full flex items-center justify-center">BK</div>
-                                <div>
-                                    <p class="font-bold text-gray-900 text-sm">Budi Kusuma</p>
-                                    <p class="text-xs text-gray-400 font-medium">Kamar 302</p>
+                    @forelse($transaksiTerbaru as $t)
+                        @php
+                            $status = $t->tagihan->status_pembayaran ?? 'belum_bayar';
+                            $namaPenyewa = $t->penghuni->nama_penghuni ?? 'Anak Kos';
+                            $initials = strtoupper(substr($namaPenyewa, 0, 2));
+                        @endphp
+                        <tr class="hover:bg-gray-50/40 transition">
+                            <td class="p-4 pl-6 text-gray-500 text-xs">
+                                {{ $t->created_at ? $t->created_at->format('d M Y') : now()->format('d M Y') }}
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-50 text-blue-600 font-bold text-xs rounded-full flex items-center justify-center uppercase">
+                                        {{ $initials }}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-900 text-sm leading-tight">{{ $namaPenyewa }}</p>
+                                        <p class="text-xs text-gray-400 font-medium">
+                                            Kamar {{ $t->penghuni->kamar->no_kamar ?? '-' }}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="p-4 font-bold text-gray-900">Rp 3.500.000</td>
-                        <td class="p-4">
-                            <span class="px-2.5 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-full">● Berhasil</span>
-                        </td>
-                        <td class="p-4 text-center text-gray-400 cursor-pointer hover:text-gray-900">⋮</td>
-                    </tr>
-                    <tr>
-                        <td class="p-4 pl-6 text-gray-500 text-xs">24 Okt 2023</td>
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-purple-50 text-purple-600 font-bold text-xs rounded-full flex items-center justify-center">SL</div>
-                                <div>
-                                    <p class="font-bold text-gray-900 text-sm">Siti Lestari</p>
-                                    <p class="text-xs text-gray-400 font-medium">Kamar 105</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-4 font-bold text-gray-900">Rp 2.800.000</td>
-                        <td class="p-4">
-                            <span class="px-2.5 py-1 bg-amber-50 text-amber-600 text-xs font-bold rounded-full">● Tertunda</span>
-                        </td>
-                        <td class="p-4 text-center text-gray-400 cursor-pointer hover:text-gray-900">⋮</td>
-                    </tr>
+                            </td>
+                            <td class="p-4 font-bold text-gray-900">
+                                Rp {{ number_format($t->tagihan->total_tagihan ?? 0, 0, ',', '.') }}
+                            </td>
+                            <td class="p-4">
+                                @if($status === 'lunas')
+                                    <span class="px-2.5 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-full">● Berhasil</span>
+                                @elseif($status === 'menunggu_verifikasi')
+                                    <span class="px-2.5 py-1 bg-amber-50 text-amber-600 text-xs font-bold rounded-full">● Tertunda</span>
+                                @else
+                                    <span class="px-2.5 py-1 bg-gray-50 text-gray-500 text-xs font-bold rounded-full">● Belum Bayar</span>
+                                @endif
+                            </td>
+                            <td class="p-4 text-center text-gray-400 cursor-pointer hover:text-gray-900 font-bold">⋮</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-gray-400 text-xs">Belum ada riwayat transaksi pembayaran masuk rill.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
         <div class="p-4 text-center border-t border-gray-50 bg-gray-50/30">
-            <a href="#" class="text-xs font-bold text-blue-600 hover:underline">Lihat Semua Transaksi ➡️</a>
+            <a href="{{ route('admin.pembayaran') }}" class="text-xs font-bold text-blue-600 hover:underline">Lihat Semua Transaksi ➡️</a>
         </div>
     </div>
 

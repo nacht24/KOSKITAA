@@ -15,7 +15,6 @@ class Kos extends Model
         'id_admin',
     ];
 
-    // Relasi: Satu Kos menyediakan Banyak Kamar (1:M di ERD Word lo)
     public function kamar()
     {
         return $this->hasMany(Kamar::class, 'id_kos');

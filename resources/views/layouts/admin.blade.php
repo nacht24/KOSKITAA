@@ -23,6 +23,9 @@
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ Route::is('admin.dashboard') ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }} transition">
                         <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
                     </a>
+                    <a href="{{ route('admin.kos') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ Route::is('admin.kos*') ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }} transition">
+                        <i data-lucide="building" class="w-4 h-4"></i> Manajemen Kos
+                    </a>
                     <a href="{{ route('admin.kamar') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ Route::is('admin.kamar*') ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }} transition">
                         <i data-lucide="bed" class="w-4 h-4"></i> Kamar
                     </a>
@@ -53,7 +56,7 @@
             <header class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center sticky top-0 z-40">
                 <div class="relative w-96">
                     <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"></i>
-                    <input type="text" placeholder="Cari data, kamar, atau penyewa..." class="w-full pl-11 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500">
+                    <input type="text" placeholder="Cari data, kamar, atau penyewa..." class="w-full pl-11 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
                 <div class="flex items-center gap-4">
                     <button class="text-gray-500 p-1.5 hover:bg-gray-50 rounded-xl transition">

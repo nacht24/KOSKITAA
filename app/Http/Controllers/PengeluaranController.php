@@ -9,43 +9,41 @@ class PengeluaranController extends Controller
 {
     public function index()
     {
-        $pengeluarans = Pengeluaran::all();
+        $pengeluarans = Pengeluaran::orderBy('created_at', 'desc')->get();
         return view('admin.pengeluaran', compact('pengeluarans'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nominal'           => 'required|numeric',
             'jenis_pengeluaran' => 'required|string|max:255',
             'id_admin'          => 'required|integer',
             'id_kos'            => 'required|integer',
         ]);
 
-        Pengeluaran::create($request->all());
-        return redirect()->route('admin.pengeluaran.index')->with('success', 'Data berhasil ditambahkan.');
+        Pengeluaran::create($validated);
+        return redirect()->route('admin.pengeluaran.index')->with('success', 'Data pengeluaran berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id_pengeluaran)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nominal'           => 'required|numeric',
             'jenis_pengeluaran' => 'required|string|max:255',
             'id_admin'          => 'required|integer',
             'id_kos'            => 'required|integer',
         ]);
 
-        $pengeluaran = Pengeluaran::where('id_pengeluaran', $id_pengeluaran)->firstOrFail();
-        $pengeluaran->update($request->all());
+        Pengeluaran::where('id_pengeluaran', $id_pengeluaran)->firstOrFail()->update($validated);
 
-        return redirect()->route('admin.pengeluaran.index')->with('success', 'Data berhasil diperbarui.');
+        return redirect()->route('admin.pengeluaran.index')->with('success', 'Data pengeluaran berhasil diperbarui.');
     }
 
     public function destroy($id_pengeluaran)
     {
-        $pengeluaran = Pengeluaran::where('id_pengeluaran', $id_pengeluaran)->firstOrFail();
-        $pengeluaran->delete();
+        Pengeluaran::where('id_pengeluaran', $id_pengeluaran)->firstOrFail()->delete();
 
-        return redirect()->route('admin.pengeluaran.index')->with('success', 'Data berhasil dihapus.');
+        return redirect()->with('success', 'Data pengeluaran berhasil dihapus.');
     }
 }
