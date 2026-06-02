@@ -21,7 +21,7 @@ class KamarController extends Controller
         $request->validate([
             'no_kamar' => 'required|string',
             'harga_kamar' => 'required|numeric',
-            'status_kamar' => 'required|in:kosong,terisi',
+            'status_kamar' => 'required|in:kosong,terisi,perbaikan',
             'id_kos' => 'required|exists:kos,id_kos',
         ]);
 
@@ -35,7 +35,7 @@ class KamarController extends Controller
         $request->validate([
             'no_kamar' => 'required|string',
             'harga_kamar' => 'required|numeric',
-            'status_kamar' => 'required|in:kosong,terisi',
+            'status_kamar' => 'required|in:kosong,terisi,perbaikan',
             'id_kos' => 'required|exists:kos,id_kos',
         ]);
 

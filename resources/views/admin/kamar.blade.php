@@ -112,7 +112,7 @@
                                 </button>
                                 <form action="{{ route('admin.kamar.destroy', $kamar->id_kamar) }}" method="POST" onsubmit="return confirm('Hapus kamar ini?')">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
+                                    <button type="button" onclick="openDeleteModal('{{ route('admin.kamar.destroy', $kamar->id_kamar) }}')" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </form>
@@ -172,6 +172,22 @@
     </div>
 </div>
 
+<div id="deleteModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl transform scale-95 transition-transform duration-300 text-center">
+        <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-bold text-gray-900 mb-2">Hapus Unit Kamar?</h3>
+        <p class="text-sm text-gray-500 mb-6">Tindakan ini tidak dapat dibatalkan. Data kamar akan dihapus permanen.</p>
+        <form id="deleteForm" method="POST" class="flex gap-3">
+            @csrf
+            @method('DELETE')
+            <button type="button" onclick="closeDeleteModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-2.5 rounded-xl text-sm transition">Batal</button>
+            <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-sm">Ya, Hapus</button>
+        </form>
+    </div>
+</div>
+
 <script>
     const modal = document.getElementById('kamarModal');
     const form = document.getElementById('modalForm');
@@ -199,10 +215,29 @@
         document.getElementById('input_no_kamar').value = kamar.no_kamar;
         document.getElementById('input_harga_kamar').value = kamar.harga_kamar;
         
-        let status = kamar.status_kamar.toLowerCase();
-        if(status === 'tersedia') status = 'kosong';
+        let status = kamar.status_kamar ? kamar.status_kamar.toLowerCase().trim() : 'kosong';
+        if (status === 'tersedia') status = 'kosong';
         document.getElementById('input_status_kamar').value = status;
         showModal();
+    }
+
+    function openDeleteModal(deleteUrl) {
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = deleteUrl;
+
+        deleteModal.classList.remove('hidden');
+        setTimeout(() => {
+            deleteModal.classList.remove('opacity-0');
+            deleteModal.querySelector('div').classList.remove('scale-95');
+        }, 10);
+    }
+
+    function closeDeleteModal() {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.classList.add('opacity-0');
+        deleteModal.querySelector('div').classList.add('scale-95');
+        setTimeout(() => { deleteModal.classList.add('hidden'); }, 300);
     }
 
     function showModal() {
