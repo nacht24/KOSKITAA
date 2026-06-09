@@ -125,7 +125,7 @@
                     <h3 class="text-lg font-black tracking-tight mt-4">Butuh Bantuan?</h3>
                     <p class="text-xs text-blue-100/90 leading-relaxed font-medium">Hubungi Admin langsung via WhatsApp untuk kendala fasilitas atau pembayaran.</p>
                 </div>
-                <a href="https://wa.me/628123456789?text=Halo%20Admin%20KosKitaa%2C%20saya%20mau%20komplain..." target="_blank" class="w-full bg-white text-blue-600 hover:bg-blue-50 transition text-center font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 z-10 shadow-sm mt-4">
+                <a href="https://wa.me/62895610773523?text=Halo%20Admin%20KosKitaa%2C%20saya%20mau%20komplain..." target="_blank" class="w-full bg-white text-blue-600 hover:bg-blue-50 transition text-center font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 z-10 shadow-sm mt-4">
                     Hubungi Admin <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 </a>
                 <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-blue-500 rounded-full opacity-20"></div>
@@ -144,8 +144,8 @@
                     <a href="https://wa.me/628123456789?text=Halo%20Ibu%20Kos%2C%20saya%20penghuni%20kamar%20{{ Auth::user()->kamar->no_kamar ?? '' }}..." target="_blank" class="flex items-center gap-3 hover:bg-gray-50 p-1 rounded-xl transition">
                         <div class="p-2 bg-green-50 text-green-600 rounded-lg"><i data-lucide="phone" class="w-4 h-4"></i></div>
                         <div>
-                            <p class="text-3xs font-bold text-gray-400 uppercase">WhatsApp Ibu Kos</p>
-                            <p class="text-xs font-bold text-gray-800 hover:text-blue-600">0812-3456-789</p>
+                            <p class="text-3xs font-bold text-gray-400 uppercase">WhatsApp Admin Kos</p>
+                            <p class="text-xs font-bold text-gray-800 hover:text-blue-600">0851-5733-2408</p>
                         </div>
                     </a>
                 </div>

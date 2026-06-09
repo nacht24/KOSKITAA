@@ -31,7 +31,7 @@
                     <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
                 </a>
                 
-                <a href="{{ route('penghuni.tagihan') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ Route::is('penghuni.tagihan') || Route::is('penghuni.upload') ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }} transition">
+                <a href="{{ route('penghuni.tagihan') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ Route::is('penghuni.tagihan') ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }} transition">
                     <i data-lucide="credit-card" class="w-4 h-4"></i> Tagihan
                 </a>
 

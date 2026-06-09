@@ -10,9 +10,6 @@
             <h1 class="text-2xl font-black text-gray-900 tracking-tight">Ringkasan Dashboard</h1>
             <p class="text-sm text-gray-500 mt-1 font-medium">Selamat datang kembali, inilah yang terjadi di Residential Management hari ini.</p>
         </div>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-blue-100 cursor-pointer">
-            + Tambah Transaksi Baru
-        </button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

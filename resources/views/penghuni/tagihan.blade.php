@@ -45,10 +45,6 @@
                                 Belum Dibayar • Jatuh Tempo 10 {{ substr($tagihanAktif->bulan_tagihan, 0, 3) }}
                             </span>
                         @endif
-                        
-                        <button type="button" class="text-xs border border-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-xl hover:bg-gray-50 flex items-center gap-1.5 transition">
-                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
-                        </button>
                     </div>
 
                     <div>

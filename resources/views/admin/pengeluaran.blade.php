@@ -81,6 +81,7 @@
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-100 text-gray-400 text-xs font-bold uppercase tracking-wider">
                         <th class="p-4 pl-6">Tanggal</th>
+                        <th class="p-4">Kos</th>
                         <th class="p-4">Kategori</th>
                         <th class="p-4">Deskripsi</th>
                         <th class="p-4">Jumlah</th>
@@ -114,6 +115,9 @@
                         @endphp
                         <tr class="hover:bg-gray-50/50 transition-colors">
                             <td class="p-4 pl-6 text-gray-400 text-xs whitespace-nowrap">{{ \Carbon\Carbon::parse($p->created_at)->format('d M Y') }}</td>
+                            <td class="p-4 text-gray-900 text-xs font-bold whitespace-nowrap">
+                                {{ $p->kos->nama_kos ?? 'Semua Kos' }}
+                            </td>
                             <td class="p-4">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold {{ $colorClass }}">
                                     <span class="w-1.5 h-1.5 rounded-full {{ $dotClass }}"></span> {{ $kategori }}
@@ -237,7 +241,15 @@
                     </select>
                 </div>
                 <input type="hidden" name="id_admin" value="{{ auth('admin')->id() }}">
-                <input type="hidden" name="id_kos" value="1">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Pilih Properti Kos</label>
+                    <select name="id_kos" id="id_kos" class="w-full bg-gray-50 border border-gray-200 rounded-xl text-sm px-3 py-2.5 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required>
+                        <option value="">Pilih lokasi kos...</option>
+                        @foreach($semuaKos as $kos)
+                            <option value="{{ $kos->id_kos }}">{{ $kos->nama_kos }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="mt-6 flex gap-3">
                 <button type="button" onclick="closeModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 py-2.5 rounded-xl text-xs font-bold text-gray-700 transition">Batal</button>
@@ -254,6 +266,7 @@
         document.getElementById('formPengeluaran').action = '{{ route('admin.pengeluaran.store') }}';
         document.getElementById('methodField').innerHTML = '';
         document.getElementById('jenis_pengeluaran').value = '';
+        document.getElementById('id_kos').value = '';
         document.getElementById('nominal').value = '';
         document.getElementById('deskripsi') && (document.getElementById('deskripsi').value = '');
         document.getElementById('modalPengeluaran').classList.remove('hidden');
@@ -266,14 +279,20 @@
     }
 
     function editData(p) {
+        openModal();
+        
         document.getElementById('modalTitle').textContent = 'Edit Pengeluaran';
         document.getElementById('formPengeluaran').action = `/admin/pengeluaran/${p.id_pengeluaran}`;
         document.getElementById('methodField').innerHTML = `<input type="hidden" name="_method" value="PUT">`;
+        
         document.getElementById('jenis_pengeluaran').value = p.jenis_pengeluaran ?? '';
+        document.getElementById('id_kos').value = p.id_kos ?? '';
         document.getElementById('nominal').value = p.nominal ?? '';
-        if (document.getElementById('deskripsi')) document.getElementById('deskripsi').value = p.deskripsi ?? '';
-        if (document.getElementById('status')) document.getElementById('status').value = p.status ?? 'lunas';
-        openModal();
+        document.getElementById('status').value = p.status ?? 'lunas';
+        
+        if (document.getElementById('deskripsi')) {
+            document.getElementById('deskripsi').value = p.deskripsi ?? '';
+        }
     }
 
     function toggleDropdown(id) {

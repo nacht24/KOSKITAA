@@ -19,9 +19,10 @@ class PembayaranController extends Controller
             $query->where('status_pembayaran', 'menunggu_verifikasi');
         })->count();
 
-        $disetujuiHariIni = Pembayaran::whereHas('tagihan', function ($query) {
+        $disetujuiBulanIni = Pembayaran::whereHas('tagihan', function ($query) {
             $query->where('status_pembayaran', 'lunas')
-                  ->whereDate('tagihan.updated_at', Carbon::today());
+                ->whereMonth('tagihan.updated_at', Carbon::now()->month)
+                ->whereYear('tagihan.updated_at', Carbon::now()->year);
         })->count();
 
         $totalMemverifikasi = Pembayaran::whereHas('tagihan', function ($query) {
@@ -33,7 +34,7 @@ class PembayaranController extends Controller
         return view('admin.pembayaran', compact(
             'semuaPembayaran',
             'menungguTinjauan',
-            'disetujuiHariIni',
+            'disetujuiBulanIni',
             'totalMemverifikasi'
         ));
     }

@@ -40,8 +40,8 @@
         </div>
 
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Disetujui Hari Ini</p>
-            <span class="text-3xl font-black text-gray-900">{{ $disetujuiHariIni ?? 0 }}</span>
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Disetujui Bulan Ini</p>
+            <span class="text-3xl font-black text-gray-900">{{ $disetujuiBulanIni ?? 0 }}</span>
         </div>
 
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
@@ -178,7 +178,7 @@
                                 @else
                                     <span class="text-xs text-gray-400 font-semibold">
                                         Diverifikasi oleh<br>
-                                        <span class="text-gray-500">{{ $bayar->verified_by ?? 'Nama Admin' }}</span>
+                                        <span class="text-gray-500">{{ $bayar->verified_by ?? 'Admin' }}</span>
                                     </span>
                                 @endif
                             </td>

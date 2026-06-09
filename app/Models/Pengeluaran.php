@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Kos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +19,13 @@ class Pengeluaran extends Model
         'nominal',
         'jenis_pengeluaran',
         'id_admin',
-        'id_kos'
+        'id_kos',
+        'deskripsi',
+        'status'
     ];
+
+    public function kos()
+    {
+        return $this->belongsTo(Kos::class, 'id_kos', 'id_kos');
+    }
 }
